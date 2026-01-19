@@ -1,0 +1,23 @@
+{
+  "name": "server_making",
+  "version": "1.0.0",
+  "description": "this is server  build by Rajiv kumar",
+  "keywords": [
+    "express",
+    "server",
+    "backend"
+  ],
+  "license": "ISC",
+  "author": "Rajiv kumar",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon ./src/index.js",
+    "start": "node ./src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "express": "^5.2.1",
+    "nodemon": "^3.1.11"
+  }
+}
