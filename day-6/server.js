@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const PORT = 3000
 
 function connectDB() {
-    mongoose.connect('mongodb+srv://mahakalrj8207_db_user:LzcmjoaQZEPe178j@cluster0.gkk6t0u.mongodb.net/day-6')
+    mongoose.connect('')
         .then(() => {
             console.log('Database is connect successfully');
         })
