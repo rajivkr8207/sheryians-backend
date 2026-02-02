@@ -3,6 +3,8 @@ const app = express();
 const cors = require('cors')
 app.use(express.json());
 app.use(cors())
+app.use(express.static('./public'))
+
 const note = require('./models/note.model.js')
 
 app.get('/api/notes', async (req, res) => {
@@ -36,13 +38,17 @@ app.post('/api/notes', async (req, res) => {
     })
 })
 
-app.patch('/api/notes/:id', async (req, res) => {
-    const { description } = req.body
+app.put('/api/notes/:id', async (req, res) => {
+    const { title, description } = req.body
 
-    await note.findByIdAndUpdate(req.params.id, { description })
+    await note.findByIdAndUpdate(req.params.id, {title, description })
     return res.status(200).json({
         message: "note update successfully",
     })
+})
+
+app.use('*name', (req, res) => {
+    res.sendFile(path.join(__dirname, '..', '/public/index.html'))
 })
 
 
