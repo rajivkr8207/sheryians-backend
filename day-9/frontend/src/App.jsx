@@ -88,7 +88,7 @@ const App = () => {
   }
   async function handleEdit() {
     try {
-      await axios.put(`http://localhost:3000/api/notes/${noteid}`, {
+      await axios.put(`https://sheryians-backend-z7p9.onrender.com/api/notes/${noteid}`, {
         title, description
       })
       fetchnotes()
