@@ -46,10 +46,10 @@ app.put('/api/notes/:id', async (req, res) => {
         message: "note update successfully",
     })
 })
-
-app.use('*name', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', '/public/index.html'))
-})
+// console.log(__dirname);
+// app.use('*name', (req, res) => {
+//     res.sendFile('./index.html')
+// })
 
 
 module.exports = app
