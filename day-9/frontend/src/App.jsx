@@ -42,7 +42,7 @@ const App = () => {
   const [description, setDescription] = useState('')
   async function fetchnotes() {
     try {
-      const res = await axios.get('http://localhost:3000/api/notes')
+      const res = await axios.get('https://sheryians-backend-z7p9.onrender.com/api/notes')
       setNotes(res.data.data)
     } catch (error) {
       console.error(error);
@@ -59,7 +59,7 @@ const App = () => {
       return
     }
     try {
-      await axios.post('http://localhost:3000/api/notes', {
+      await axios.post('https://sheryians-backend-z7p9.onrender.com/api/notes', {
         title: title,
         description: description
       })
@@ -73,7 +73,7 @@ const App = () => {
 
   async function handleDelete(id) {
     try {
-      await axios.delete(`http://localhost:3000/api/notes/${id}`)
+      await axios.delete(`https://sheryians-backend-z7p9.onrender.com/api/notes/${id}`)
       fetchnotes()
     } catch (error) {
       console.error(error);
