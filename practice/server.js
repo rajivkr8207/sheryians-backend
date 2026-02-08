@@ -1,9 +1,11 @@
-import app from "./src/app.js"
-import { PORT } from "./src/constant.js";
+require('dotenv').config('./.env')
+const app = require('./src/app')
+const ConnectDB = require('./src/config/database')
+const PORT = process.env.PORT
 
 
 
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+ConnectDB()
+app.listen(PORT, (req,res)=>{
+    console.log(`server is running on ${PORT} port`);
+})
