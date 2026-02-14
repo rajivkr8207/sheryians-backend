@@ -1,7 +1,6 @@
 const Usermodel = require("../models/user.model");
 const jwt = require('jsonwebtoken')
-const crypto = require('crypto')
-
+const bcrypt = require('bcrypt');
 
 const RegisterController = async (req, res) => {
     const { fullname, username, email, password, bio, profile_image } = req.body
@@ -13,7 +12,7 @@ const RegisterController = async (req, res) => {
             message: 'user is already exist'
         })
     }
-    const hashPassword = crypto.createHash('sha256').update(password).digest('hex')
+    const hashPassword = await bcrypt.hash(password, 10)
 
 
     const user = await Usermodel.create({
@@ -48,15 +47,14 @@ const LoginController = async (req, res) => {
         })
     }
 
-    const hashPassword = crypto.createHash('sha256').update(password).digest('hex')
-    const isPassword = hashPassword == isUseralreadyexist.password
+    const isPassword = await bcrypt.compare(password,isUseralreadyexist.password)
     if (!isPassword) {
         return res.status(409).json({
             message: 'invalid credintial'
         })
     }
     const token = jwt.sign({ id: isUseralreadyexist._id }, process.env.JWT_SECRET,{expiresIn:"3d"})
-    res.cookie('token', token)
+    res.cookie('instatoken', token)
     return res.status(200).json({
         message: "user is login successfully",
         token
@@ -65,7 +63,7 @@ const LoginController = async (req, res) => {
 
 
 const ProfileController = async (req, res) => {
-    const token = req.cookies.token
+    const token = req.cookies.instatoken
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
     if(!decoded){
         return res.status(409).json({
@@ -78,8 +76,17 @@ const ProfileController = async (req, res) => {
         user
     })
 }
+
+const LogoutController = (req, res) => {
+    res.clearCookie('instatoken');
+    res.status(200).json({
+        message: "Logout successful"
+    });
+}
+
 module.exports = {
     RegisterController,
     LoginController,
-    ProfileController
+    ProfileController,
+    LogoutController
 }
