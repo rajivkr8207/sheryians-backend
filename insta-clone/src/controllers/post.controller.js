@@ -8,9 +8,15 @@ const client = new ImageKit({
 });
 
 const CreatePostController = async (req, res) => {
-    const { caption, user } = req.body
+    const { caption } = req.body
     const file = req.file
     const token = req.cookies.instatoken
+    if (!token) {
+        return res.status(401).json({
+            message: "token not found",
+
+        })
+    }
     let decoded
     try {
         decoded = jwt.verify(token, process.env.JWT_SECRET)
@@ -36,10 +42,62 @@ const CreatePostController = async (req, res) => {
 }
 
 
+const GetPostController = async (req, res) => {
+    const token = req.cookies.instatoken
+    if (!token) {
+        return res.status(401).json({
+            message: "token not found",
+
+        })
+    }
+    let decoded
+    try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET)
+    } catch (error) {
+        return res.status(401).json({
+            message: 'user is unautorise'
+        })
+    }
+    const Allpost = await Postmodel.find({
+        user: decoded.id
+    })
+    return res.status(200).json({
+        message: 'post is fetch successfully',
+        Allpost
+    })
+}
 
 
+const GetPostUsingParams = async (req, res) => {
+    const id = req.params.id
+    const token = req.cookies.instatoken
+    if (!token) {
+        return res.status(401).json({
+            message: "token not found",
+
+        })
+    }
+    let decoded
+    try {
+        decoded = jwt.verify(token, process.env.JWT_SECRET)
+    } catch (error) {
+        return res.status(401).json({
+            message: 'user is unautorise'
+        })
+    }
+    const post = await Postmodel.findOne({
+        _id: id,
+        user: decoded.id
+    })
+    return res.status(200).json({
+        message: 'post is fetch successfully',
+        post
+    })
+}
 
 
 module.exports = {
-    CreatePostController
+    CreatePostController,
+    GetPostController,
+    GetPostUsingParams
 }
